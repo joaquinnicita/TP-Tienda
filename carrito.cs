@@ -5,7 +5,7 @@ using ProductoNamespace;
 using TiendaNamespace;
 
 namespace CarritoNamespace {
-    
+
 public class Carrito
 {
     public List<Producto> Lproductos { get; set; }
@@ -17,31 +17,56 @@ public class Carrito
     }
 
 
-public void AgregarCarrito (Tienda tienda, Carrito carrito, int indice, int cantidad){
-    Producto producto = tienda.GetProducto(tienda, indice-1);
-    if((producto.stock - cantidad) > 0){
-        carrito.Lproductos.Add(producto);
-        producto.stock -= cantidad;
+    public void AgregarCarrito(Tienda tienda, int indice, int cantidad)
+    {
+        if (indice - 1 >= 0 && indice - 1 < tienda.Lproductos.Count)
+        {
+            Producto producto = tienda.GetProducto(indice - 1);
+            if (producto.stock >= cantidad)
+            {
+                Producto productoCarrito = new Producto(producto.Nombre, producto.Costo, producto.Precio, cantidad);
+                Lproductos.Add(productoCarrito);
+                producto.stock -= cantidad;
+            }
+            else
+            {
+                Console.WriteLine("No hay suficiente stock del producto");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Índice fuera de rango");
+        }
     }
-    else {
-        Console.WriteLine("No hay suficiente stock del producto");
-    }
-}
 
-public void MostrarCarrito(Carrito carrito)
+
+public void MostrarCarrito()
   {
-    foreach(Producto producto in carrito.Lproductos)
-      Console.WriteLine("{0}, {1} unidades", producto.Nombre, producto.Stock);
+      int indice = 1;
+      foreach(Producto producto in Lproductos){
+        Console.WriteLine("\n({3}) {0} \n${1} \n{2} unidades en stock", producto.nombre, producto.precio, producto.stock, indice);
+        indice++;
+      }
   }
 
-public void EliminarCarrito (Carrito carrito, int producto){
-    carrito.Lproductos.RemoveAt(producto);
-}
+public void EliminarCarrito (int indice) {
+        if (indice - 1 < Lproductos.Count && indice - 1 >= 0)
+        {
+            Lproductos.RemoveAt(indice - 1);
+        }
+        else
+        {
+            Console.WriteLine("Índice fuera de rango");
+        }
+    }
 
-public float CalcularSubtotal(Carrito carrito){
-    float subtotal = 0;
-    foreach(Producto producto in carrito.Lproductos)
-        subtotal += producto.precio;
-    return subtotal;
-}
+public float CalcularSubtotal()
+    {
+        float subtotal = 0;
+        foreach (Producto producto in Lproductos)
+        {
+            subtotal += producto.Precio * producto.Stock;
+        }
+        return subtotal;
+    }
 }}

@@ -1,16 +1,10 @@
 using System.Collections.Generic;
 using ProductoNamespace;
+using CarritoNamespace;
+using System;
 
 namespace TiendaNamespace {
 public class Tienda{
-
-/*  public void Vender(Tienda tienda, Producto producto, int cantidad){
-    for(int i = 0; i < cantidad; i++){
-      tienda.Lproductos.Remove(producto);
-      tienda.Remove(tienda.producto)
-    }
-  }
-*/
 
   public void AgregarProducto(Tienda tienda, Producto producto)
   {
@@ -24,21 +18,33 @@ public class Tienda{
 
   public void MostrarProductos(Tienda tienda)
   {
-    foreach(Producto producto in tienda.Lproductos)
-      Console.WriteLine("{0}, {1} unidades en stock", producto.Nombre, producto.Stock);
-
+    int indice = 1;
+    foreach(Producto producto in tienda.Lproductos){
+      Console.WriteLine("\n({3}) {0} \n${1} \n{2} unidades en stock", producto.Nombre, producto.precio, producto.Stock, indice);
+      indice++;
+    }
   }
 
-  public Producto GetProducto (Tienda tienda, int indice){
-      if (indice >= 0 && indice < tienda.Lproductos.Count)
+  public Producto GetProducto (int indice){
+      if (indice >= 0 && indice < Lproductos.Count)
       {
-        return tienda.Lproductos[indice];
+        return Lproductos[indice];
       }
       else
       {
         return null;
       }
     }
+
+  public void Cobrar(Tienda tienda, float subtotal)
+  {
+    tienda.dinero += subtotal;
+  }
+
+  public void MostrarDinero(Tienda tienda)
+  {
+    Console.WriteLine("Dinero en caja: {0}", tienda.dinero);
+  }
 
   public List<Producto> Lproductos = new List<Producto>();
   private float dinero = 0;

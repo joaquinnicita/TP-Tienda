@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
 namespace ProductoNamespace{
-  
+
 // Clase
 public class Producto {
 

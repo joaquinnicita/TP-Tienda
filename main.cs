@@ -1,4 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
+// See https://aka.ms/new-console-template for more information
 using System;
 using System.Collections.Generic;
 using TiendaNamespace;
@@ -12,21 +12,22 @@ namespace Tp2AAT
     {
         public static void Main()
         {
-            
-          Tienda tienda = new Tienda(new List<Producto>(), 1000f);
-          Carrito carrito = new Carrito();
-          
+
+            Tienda tienda = new Tienda(new List<Producto>(), 1000f);
+            Carrito carrito = new Carrito();
+
 
             for (int i = 1; i > 0;)
             {
-                Console.WriteLine("Elige una opcion: ");
+                Console.WriteLine("\n\nElige una opcion: ");
                 Console.WriteLine("1. Agregar producto a la tienda.");
                 Console.WriteLine("2. Eliminar producto de la tienda.");
                 Console.WriteLine("3. Mostrar productos de la tienda.");
                 Console.WriteLine("4. Agregar producto al carrito.");
                 Console.WriteLine("5. Eliminar producto del carrito.");
                 Console.WriteLine("6. Cobrar.");
-                Console.WriteLine("7. Salir.");
+                Console.WriteLine("7. Mostrar dinero en caja.");
+                Console.WriteLine("8. Salir.");
 
 
                 int opcion = int.Parse(Console.ReadLine());
@@ -35,18 +36,17 @@ namespace Tp2AAT
                     case 1:
                         Console.Write("Ingrese el nombre del Producto: ");
                         string nombre = Console.ReadLine();
-                        Console.Write("Ingrese el Precio del producto: ");
-                        float precio = float.Parse(Console.ReadLine());
                         Console.Write("Ingrese en costo del producto: ");
                         float costo = float.Parse(Console.ReadLine());
+                        float precio = (float)1.3 * costo;
                         Console.Write("Ingrese el stock del producto: ");
-                    int stock = int.Parse(Console.ReadLine());
-                        Producto p = new Producto(nombre, precio, costo, stock);
+                        int stock = int.Parse(Console.ReadLine());
+                        Producto p = new Producto(nombre, costo, precio, stock);
                         tienda.AgregarProducto(tienda, p);
                         break;
                     case 2:
                         tienda.MostrarProductos(tienda);
-                        Console.WriteLine("Elja el indice del producto a eliminar: ");
+                        Console.Write("Elija el indice del producto a eliminar: ");
                         int eliminado = int.Parse(Console.ReadLine());
                         tienda.EliminarProducto(tienda, eliminado);
                         break;
@@ -55,24 +55,24 @@ namespace Tp2AAT
                         break;
                     case 4:
                         tienda.MostrarProductos(tienda);
-                        Console.WriteLine("Eliga el producto para agregar al carrito: ");
+                        Console.Write("Eliga el producto para agregar al carrito: ");
                         int agregadoCarrito = int.Parse(Console.ReadLine());
-                        Console.WriteLine("Eliga la cantidad a agregar: ");
+                        Console.Write("Eliga la cantidad a agregar: ");
                         int cantidad = int.Parse(Console.ReadLine());
-                        carrito.AgregarCarrito(tienda, carrito, agregadoCarrito, cantidad);
+                        carrito.AgregarCarrito(tienda, agregadoCarrito, cantidad);
                         break;
 
                     case 5:
-                        carrito.MostrarCarrito(carrito);
-                        Console.WriteLine("Elija el indice del producto a eliminar del carrito: ");
+                        carrito.MostrarCarrito();
+                        Console.Write("Elija el indice del producto a eliminar del carrito: ");
                         int eliminadoCarrito = int.Parse(Console.ReadLine());
-                        carrito.EliminarCarrito(carrito, eliminadoCarrito);
+                        carrito.EliminarCarrito (eliminadoCarrito);
                         break;
 
                     case 6:
-                        float subtotal = carrito.CalcularSubtotal(carrito);
+                        float subtotal = carrito.CalcularSubtotal();
                         Console.WriteLine("Subtotal: {0} ", subtotal);
-                        Console.Write("Ingrese el total a pagar: ");
+                        Console.Write("Ingrese el monto que pagara: ");
                         float pagar = float.Parse(Console.ReadLine());
                         if (pagar < subtotal)
                         {
@@ -82,11 +82,16 @@ namespace Tp2AAT
                         {
                             float vuelto = (pagar - subtotal);
                             Console.WriteLine("Su vuelto es {0}", vuelto);
+                            tienda.Cobrar(tienda, subtotal);
                             carrito = new Carrito();
                         }
                         break;
 
                     case 7:
+                        tienda.MostrarDinero(tienda);
+                        break;
+
+                    case 8:
                         Console.WriteLine("Gracias por su compra :)");
                         i = 0;
                         break;
@@ -99,61 +104,3 @@ namespace Tp2AAT
         }
     }
 }
-
-/*
-Main:
-Inicializa una instancia de Tienda con un dinero inicial.
-Inicializa una instancia de Carrito.
-Contiene un bucle iterativo para el menú:
-Opciones:
-Agregar producto a la tienda.
-Eliminar producto de la tienda.
-Mostrar productos de la tienda.
-Agregar producto al carrito.
-Eliminar producto del carrito.
-Cobrar.
-Salir.
-Pasos del Programa
-Inicialización:
-
-Crear instancias de Tienda y Carrito.
-Menú Iterativo:
-
-Mostrar el menú.
-Leer la opción seleccionada por el usuario.
-Ejecutar la acción correspondiente:
-Agregar/Eliminar productos en la tienda.
-Mostrar productos disponibles.
-Agregar/Eliminar productos en el carrito.
-Calcular y procesar el pago.
-Salir del programa.
-Flujo de Trabajo
-Agregar Producto a la Tienda:
-
-Pedir al usuario el nombre, costo y stock del producto.
-Crear una instancia de Producto.
-Llamar a AgregarProducto en la instancia de Tienda.
-Eliminar Producto de la Tienda:
-
-Mostrar lista de productos.
-Pedir al usuario el índice del producto a eliminar.
-Llamar a EliminarProducto en la instancia de Tienda.
-Mostrar Productos de la Tienda:
-
-Llamar a MostrarProductos en la instancia de Tienda.
-Agregar Producto al Carrito:
-
-Mostrar lista de productos.
-Pedir al usuario el índice del producto y la cantidad.
-Llamar a AgregarProducto en la instancia de Carrito.
-Eliminar Producto del Carrito:
-
-Pedir al usuario el índice del producto en el carrito a eliminar.
-Llamar a EliminarProducto en la instancia de Carrito.
-Cobrar:
-
-Calcular el subtotal llamando a CalcularSubtotal en la instancia de Carrito.
-Pedir al usuario la cantidad con la que pagará.
-Llamar a Cobrar en la instancia de Tienda.
-Vaciar el carrito llamando a VaciarCarrito en la instancia de Carrito.
-*/
